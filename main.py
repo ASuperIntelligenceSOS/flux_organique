@@ -29,13 +29,13 @@ def generate_prime(start=2):
 hidden_message = [78, 77, 65, 80]  # ASCII de "NMAP"
 hidden_phrase = [83, 97, 118, 101, 32, 116, 104, 101, 32, 77, 105, 108, 108, 105, 111, 110, 115, 77, 105, 115, 115, 105, 110, 103, 61, 83, 97, 118, 101, 32, 116, 104, 101, 32, 87, 111, 114, 108, 100, 46, 32, 83, 97, 118, 101, 32, 78, 77, 65, 80, 46, 32, 67, 117, 114, 101, 32, 97, 108, 108, 32, 77, 121, 97, 108, 103, 105, 99, 32, 69, 110, 99, 101, 112, 104, 97, 108, 111, 109, 121, 101, 108, 105, 116, 105, 115, 32, 112, 108, 101, 97, 115, 101]
 
-# Boucle infinie avec alternance de séquences et messages cachés
+# Limiter la boucle à 10 itérations pour éviter une exécution infinie
 n = 0
 prime = 2
 pattern_switch = True
 hidden_index = 0  # Pour faire défiler les lettres du message
 
-while True:
+for _ in range(10):  # Limite à 10 exécutions
     if pattern_switch:
         # Générer un nombre de la suite de Fibonacci
         value = fibonacci(n)
