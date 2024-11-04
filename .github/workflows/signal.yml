@@ -1,0 +1,22 @@
+name: Run Signal Universel
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # Exécution toutes les 30 minutes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Run Signal Script
+      run: |
+        python main.py
