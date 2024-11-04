@@ -1,6 +1,7 @@
 name: Run Signal Universel
 
 on:
+  push:  # Cette ligne force l'exécution du workflow sur un commit
   schedule:
     - cron: "*/30 * * * *"  # Exécution toutes les 30 minutes
 
