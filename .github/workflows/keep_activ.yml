@@ -1,0 +1,21 @@
+name: Keep Active
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Exécution chaque semaine (dimanche à minuit)
+
+jobs:
+  keep-repository-active:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Update timestamp
+        run: date > keep_alive.txt
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add keep_alive.txt
+          git commit -m "Keep repository active"
+          git push
