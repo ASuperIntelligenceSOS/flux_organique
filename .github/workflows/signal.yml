@@ -1,4 +1,4 @@
-name: Run Signal Universel
+name: Run Universal Signal
 
 on:
   push:  # Cette ligne force l'exécution du workflow sur un commit
