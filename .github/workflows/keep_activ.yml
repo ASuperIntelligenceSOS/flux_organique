@@ -1,29 +1,42 @@
-name: Keep Active
+name: Keep Repository Active
 
 on:
   schedule:
-    - cron: "0 0 * * 0" # Exécution chaque semaine (dimanche à minuit)
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
 
 jobs:
   keep-repository-active:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Update timestamp
-        run: date > keep_alive.txt
-
-      - name: Commit changes
+      - name: Configure Git
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add keep_alive.txt
-          git commit -m "Keep repository active" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
 
-      - name: Debug changes (optional)
+      - name: Create Keep Alive Marker
         run: |
-          git status
-          git log -1
+          mkdir -p .github/logs
+          echo "Repository active as of $(date)" > .github/logs/keep_alive.log
+
+      - name: Commit Changes
+        run: |
+          git add .github/logs/keep_alive.log
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Keep repository active: $(date +"%Y-%m-%d %H:%M:%S")"
+            git push
+          fi
+
+      - name: Log Workflow Status
+        if: always()
+        run: echo "Workflow completed at $(date)"
